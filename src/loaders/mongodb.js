@@ -4,9 +4,9 @@ const startDB = async () => {
   mongoose.set("strictQuery", true);
 
   await mongoose.connect(
-    "mongodb+srv://danyelica:" +
-      process.env.DB_PASSWORD +
-      "@cluster0.msfnmi0.mongodb.net/test"
+    "mongodb://mongo:" +
+      process.env.RAILWAYDB_PASSWORD +
+      "@containers-us-west-86.railway.app:6213"
   );
 };
 
