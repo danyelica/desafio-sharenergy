@@ -1,0 +1,13 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem;
+  height: 100vh;
+}
+
+.alertBox {
+  position: absolute;
+  bottom: 10px;
+}
