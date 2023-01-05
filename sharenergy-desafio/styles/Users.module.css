@@ -1,0 +1,25 @@
+.main {
+  display: flex;
+  align-items: initial;
+  justify-content: center;
+
+  height: 89vh;
+  margin-top: 20px;
+}
+
+.cardsSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  height: 70vh;
+  width: 60%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

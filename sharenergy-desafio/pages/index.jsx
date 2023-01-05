@@ -1,3 +1,6 @@
+import ButtonUnstyled from "@mui/base/ButtonUnstyled";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   Alert,
   Box,
@@ -8,8 +11,8 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Head from "next/head";
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useLocalStorage } from "react-use";
 import styles from "../styles/Home.module.css";
 import login from "../utils/requests";
@@ -35,6 +38,25 @@ const inputStyles = {
   fontSize: "1.5rem",
 };
 
+const InputAdornment = styled("div")`
+  margin: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const IconButton = styled(ButtonUnstyled)(
+  ({ theme }) => `
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: inherit;
+  cursor: pointer;
+  color: #888888;
+  `
+);
+
 export default function Home() {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -45,6 +67,7 @@ export default function Home() {
     username: null,
     password: null,
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser, remove] = useLocalStorage("user", null);
@@ -77,7 +100,7 @@ export default function Home() {
       return router.push("/users");
     } catch (error) {
       if (error.response) {
-        setError(error.response.data.mensage);
+        setError(error.response.data.message);
       }
     }
   }
@@ -108,7 +131,7 @@ export default function Home() {
             }}
             onChange={(event) => handleForm(event.target)}
           />
-          <div>
+          <div className={styles.passwordRow}>
             <CssTextField
               id='password'
               type='password'
@@ -119,6 +142,15 @@ export default function Home() {
                 style: inputStyles,
               }}
               onChange={(event) => handleForm(event.target)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                      {!showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <FormControlLabel
               control={
@@ -141,7 +173,7 @@ export default function Home() {
           <Button
             variant='contained'
             sx={{
-              backgroundColor: "#ef476f",
+              backgroundColor: "var(--main-color)",
               "&:hover": {
                 backgroundColor: "#cf2951",
                 boxShadow: "none",

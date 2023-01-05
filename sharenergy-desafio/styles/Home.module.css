@@ -7,6 +7,11 @@
   height: 100vh;
 }
 
+.passwordRow {
+  display: flex;
+  align-items: center;
+}
+
 .alertBox {
   position: absolute;
   bottom: 10px;
