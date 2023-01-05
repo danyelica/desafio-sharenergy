@@ -1,61 +1,18 @@
-import ButtonUnstyled from "@mui/base/ButtonUnstyled";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import {
-  Alert,
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  TextField,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Alert, Box, Button, Checkbox, FormControlLabel } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useLocalStorage } from "react-use";
 import styles from "../styles/Home.module.css";
+import {
+  CssTextField,
+  IconButton,
+  InputAdornment,
+  inputStyles,
+} from "../styles/styledcomponents";
 import login from "../utils/requests";
-
-const CssTextField = styled(TextField)({
-  "& label.Mui-focused": {
-    color: "var(--main-color)",
-  },
-  "& .MuiInput-underline:after": {
-    borderBottomColor: "var(--main-color)",
-  },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "gray",
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "var(--main-color)",
-    },
-  },
-});
-
-const inputStyles = {
-  fontSize: "1.5rem",
-};
-
-const InputAdornment = styled("div")`
-  margin: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const IconButton = styled(ButtonUnstyled)(
-  ({ theme }) => `
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: inherit;
-  cursor: pointer;
-  color: #888888;
-  `
-);
 
 export default function Home() {
   const router = useRouter();

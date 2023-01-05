@@ -11,6 +11,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
+import { CssTextField, inputStyles } from "../../styles/styledcomponents";
 import styles from "../../styles/Users.module.css";
 
 export default function Users() {
@@ -23,7 +24,6 @@ export default function Users() {
     if (!user) {
       return router.push("/");
     }
-    loadUsers();
   }, []);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Users() {
   async function loadUsers() {
     try {
       const response = await fetch(
-        `https://randomuser.me/api/?page=${page}&results=10&seed=abc`
+        `https://randomuser.me/api/?page=${page}&results=10&seed=abc&inc=gender,name,email,login,dob,picture`
       );
       const data = await response.json();
       return setUsers(data.results);
@@ -52,19 +52,33 @@ export default function Users() {
     }
   }
 
+  function handleSearch(target) {
+    if (!target.value) return loadUsers();
+    const localUsers = [...users];
+    const filterUsers = localUsers.filter(
+      (user) =>
+        user.name.first.includes(target.value) ||
+        user.name.last.includes(target.value) ||
+        user.login.username.includes(target.value) ||
+        user.email.includes(target.value)
+    );
+
+    setUsers(filterUsers);
+  }
+
   return (
     <>
       <Head>
-        <title>Login Page</title>
+        <title>Users Page</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <main className={styles.main}>
         <div className={styles.cardsSection}>
           {users.map((user, index) => (
-            <Card sx={{ width: 140, height: 270 }} key={index}>
+            <Card sx={{ width: 140, height: 220 }} key={index}>
               <CardMedia
                 component='img'
-                height='150'
+                height='100'
                 image={user.picture.large}
                 alt={user.gender}
               />
@@ -81,6 +95,16 @@ export default function Users() {
               </CardContent>
             </Card>
           ))}
+          <CssTextField
+            id='search'
+            label='search'
+            variant='outlined'
+            sx={{ marginTop: "30px" }}
+            inputProps={{
+              style: inputStyles,
+            }}
+            onChange={(event) => handleSearch(event.target)}
+          />
         </div>
         <div className={styles.column}>
           <Button
