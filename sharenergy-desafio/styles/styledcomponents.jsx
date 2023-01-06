@@ -2,7 +2,7 @@ import ButtonUnstyled from "@mui/base/ButtonUnstyled";
 import { TextField } from "@mui/material/";
 import { styled } from "@mui/material/styles";
 
-export const CssTextField = styled(TextField)({
+export const Input = styled(TextField)({
   "& label.Mui-focused": {
     color: "var(--main-color)",
   },

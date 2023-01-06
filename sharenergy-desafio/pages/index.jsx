@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useLocalStorage } from "react-use";
 import styles from "../styles/Home.module.css";
 import {
-  CssTextField,
+  Input,
   IconButton,
   InputAdornment,
   inputStyles,
@@ -78,7 +78,7 @@ export default function Home() {
           noValidate
           autoComplete='off'
         >
-          <CssTextField
+          <Input
             id='username'
             label='username'
             variant='outlined'
@@ -89,7 +89,7 @@ export default function Home() {
             onChange={(event) => handleForm(event.target)}
           />
           <div className={styles.passwordRow}>
-            <CssTextField
+            <Input
               id='password'
               type='password'
               label='password'

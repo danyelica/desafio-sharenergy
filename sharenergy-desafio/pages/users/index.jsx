@@ -11,7 +11,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
-import { CssTextField, inputStyles } from "../../styles/styledcomponents";
+import { Input, inputStyles } from "../../styles/styledcomponents";
 import styles from "../../styles/Users.module.css";
 
 export default function Users() {
@@ -95,7 +95,7 @@ export default function Users() {
               </CardContent>
             </Card>
           ))}
-          <CssTextField
+          <Input
             id='search'
             label='search'
             variant='outlined'
