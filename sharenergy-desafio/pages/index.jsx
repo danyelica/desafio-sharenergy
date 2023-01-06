@@ -55,9 +55,9 @@ export default function Home() {
 
       setUser({ ...data });
       return router.push("/users");
-    } catch (error) {
-      if (error.response) {
-        setError(error.response.data.message);
+    } catch (err) {
+      if (err.response) {
+        setError(err.response.data.message);
       }
     }
   }
@@ -142,7 +142,7 @@ export default function Home() {
           </Button>
         </Box>
 
-        <div className={styles.alertBox}>
+        <div className='alertBox'>
           {(inputError.username || inputError.password) && (
             <Alert
               severity='error'

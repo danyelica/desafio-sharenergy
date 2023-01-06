@@ -1,12 +1,17 @@
 import Head from "next/head";
+import { MenuItem, Select } from "@mui/material/";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
-import styles from "../../styles/Users.module.css";
+import { Button } from "@mui/material/";
+import NotFoundPage from "../../public/assets/images/404-page-not-found.png";
+import { statusArray, statusCatApi } from "../../services/statuscode";
+import styles from "../../styles/Cats.module.css";
 
-export default function Users() {
+export default function Cats() {
   const router = useRouter();
   const user = useLocalStorage("user");
+  const [selected, setSelected] = useState("");
 
   useEffect(() => {
     if (!user) {
@@ -17,11 +22,39 @@ export default function Users() {
   return (
     <>
       <Head>
-        <title>Login Page</title>
+        <title>Cats Page</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
-      <main className={styles.main}>
-        <p>oi</p>
+      <main className='main'>
+        <Select
+          labelId='demo-simple-select-label'
+          id='demo-simple-select'
+          value=''
+          onChange={(event) => {
+            const status = Number(event.target.value);
+            if (!statusCatApi.includes(status))
+              return setSelected(NotFoundPage.src);
+            return setSelected(`https://http.cat/${status}.jpg`);
+          }}
+        >
+          {statusArray.map((status) => (
+            <MenuItem value={status.status}>{status.status}</MenuItem>
+          ))}
+        </Select>
+        <img src={selected} className={styles.image} />
+        <Button
+          variant='contained'
+          sx={{
+            backgroundColor: "var(--main-color)",
+            "&:hover": {
+              backgroundColor: "#cf2951",
+              boxShadow: "none",
+            },
+          }}
+          onClick={() => router.push("/dogs")}
+        >
+          Dogs
+        </Button>
       </main>
     </>
   );
