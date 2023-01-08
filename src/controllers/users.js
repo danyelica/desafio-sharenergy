@@ -1,4 +1,4 @@
-const UserModel = require("../Models/UserModels");
+const UserModel = require("../Models/UserModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -141,4 +141,26 @@ const remove = async (req, res) => {
     return res.status(500).json({ message: "Erro interno no servidor" });
   }
 };
-module.exports = { register, login, list, findById, update, remove };
+
+const checkingToken = async (req, res) => {
+  const { token } = req.body;
+  try {
+    const check = await jwt.verify(token, process.env.JWT_PASSWORD);
+    Input.log(check);
+  } catch (error) {
+    if (error.message == "jwt expired")
+      return res
+        .status(401)
+        .json({ message: "Por favor, faça login novamente" });
+    return res.status(500).json({ message: "Erro interno no servidor" });
+  }
+};
+module.exports = {
+  register,
+  login,
+  list,
+  findById,
+  update,
+  remove,
+  checkingToken,
+};
