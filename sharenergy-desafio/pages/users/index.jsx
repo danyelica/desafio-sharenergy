@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
 import { Input, inputStyles } from "../../styles/styledcomponents";
 import styles from "../../styles/Users.module.css";
+import { checkingToken } from "../../utils/requests";
 
 export default function Users() {
   const router = useRouter();
@@ -21,14 +22,19 @@ export default function Users() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    if (!user) {
-      return router.push("/");
-    }
+    checkingUser();
   }, []);
 
   useEffect(() => {
     loadUsers();
   }, [page]);
+
+  async function checkingUser() {
+    const response = await checkingToken(user[0]);
+
+    if (response === false) return router.push("/");
+    return;
+  }
 
   async function loadUsers() {
     try {

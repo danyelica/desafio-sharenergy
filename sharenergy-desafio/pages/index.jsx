@@ -3,16 +3,16 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Alert, Box, Button, Checkbox, FormControlLabel } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
 import styles from "../styles/Home.module.css";
 import {
-  Input,
   IconButton,
+  Input,
   InputAdornment,
   inputStyles,
 } from "../styles/styledcomponents";
-import login from "../utils/requests";
+import { login } from "../utils/requests";
 
 export default function Home() {
   const router = useRouter();
@@ -28,6 +28,12 @@ export default function Home() {
   const [remember, setRemember] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser, remove] = useLocalStorage("user", null);
+
+  useEffect(() => {
+    if (user) {
+      setForm({ username: user.username, password: user.password });
+    }
+  }, []);
 
   function handleForm(target) {
     setForm({ ...form, [target.id]: target.value });
@@ -82,6 +88,7 @@ export default function Home() {
             id='username'
             label='username'
             variant='outlined'
+            value={form.username}
             error={inputError.username}
             inputProps={{
               style: inputStyles,
@@ -94,6 +101,7 @@ export default function Home() {
               type='password'
               label='password'
               variant='outlined'
+              value={form.username}
               error={inputError.password}
               inputProps={{
                 style: inputStyles,

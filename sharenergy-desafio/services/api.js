@@ -1,9 +1,11 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://desafio-sharenergy.up.railway.app",
+  baseURL: "http://localhost:3003",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+//"https://desafio-sharenergy.up.railway.app"

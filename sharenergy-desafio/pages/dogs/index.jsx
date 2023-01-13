@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
 import { Alert, Button } from "@mui/material/";
 import styles from "../../styles/Dogs.module.css";
+import AlertBox from "../../components/AlertBox";
+import { checkingToken } from "../../utils/requests";
 
 export default function Dogs() {
   const router = useRouter();
@@ -12,12 +14,16 @@ export default function Dogs() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!user) {
-      return router.push("/");
-    }
-
+    checkingUser();
     loadDog();
   }, []);
+
+  async function checkingUser() {
+    const response = await checkingToken(user[0]);
+
+    if (response === false) return router.push("/");
+    return;
+  }
 
   async function loadDog() {
     try {
@@ -65,18 +71,7 @@ export default function Dogs() {
         >
           Página Clientes
         </Button>
-        {error && (
-          <div className='alertBox'>
-            <Alert
-              severity='error'
-              sx={{
-                fontSize: "1.5rem",
-              }}
-            >
-              {error}
-            </Alert>
-          </div>
-        )}
+        {error && <AlertBox message={error} setError={setError} />}
       </main>
     </>
   );

@@ -7,6 +7,7 @@ import { Button } from "@mui/material/";
 import NotFoundPage from "../../public/assets/images/404-page-not-found.png";
 import { statusArray, statusCatApi } from "../../services/statuscode";
 import styles from "../../styles/Cats.module.css";
+import { checkingToken } from "../../utils/requests";
 
 export default function Cats() {
   const router = useRouter();
@@ -14,10 +15,15 @@ export default function Cats() {
   const [selected, setSelected] = useState("");
 
   useEffect(() => {
-    if (!user) {
-      return router.push("/");
-    }
+    checkingUser();
   }, []);
+
+  async function checkingUser() {
+    const response = await checkingToken(user[0]);
+
+    if (response === false) return router.push("/");
+    return;
+  }
 
   return (
     <>
