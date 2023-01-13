@@ -53,7 +53,7 @@ const login = async (req, res) => {
         .json({ message: "O usuário não tem autorização." });
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_PASSWORD, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_PASSWORD, {
       expiresIn: "8h",
     });
 
@@ -61,6 +61,7 @@ const login = async (req, res) => {
       .status(200)
       .json({ id: user._id, username: user.username, token });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Erro interno no servidor" });
   }
 };
@@ -145,8 +146,7 @@ const remove = async (req, res) => {
 const checkingToken = async (req, res) => {
   const { token } = req.body;
   try {
-    const check = await jwt.verify(token, process.env.JWT_PASSWORD);
-    Input.log(check);
+    await jwt.verify(token, process.env.JWT_PASSWORD);
   } catch (error) {
     if (error.message == "jwt expired")
       return res

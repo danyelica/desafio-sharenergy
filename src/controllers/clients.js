@@ -1,10 +1,30 @@
 const ClientModel = require("../Models/ClientsModel.js");
 
 const validatingBody = async (req) => {
-  const { nome, email, telefone, endereco, cpf } = req.body;
+  const { id } = req.params;
+  const {
+    nome,
+    email,
+    telefone,
+    cpf,
+    cep,
+    logradouro,
+    complemento,
+    bairro,
+    cidade,
+    estado,
+  } = req.body;
 
-  if ((!nome || !email || !telefone, !endereco, !cpf)) {
-    const error = new Error("Todos os campos são obrigatórios.");
+  if (
+    (!nome || !email || !telefone,
+    !cpf,
+    !cep,
+    !logradouro,
+    !bairro,
+    !cidade,
+    !estado)
+  ) {
+    const error = new Error("Preencha os campos obrigatórios.");
     error.code = 400;
     throw error;
   }
@@ -12,15 +32,20 @@ const validatingBody = async (req) => {
   if (
     typeof nome !== "string" ||
     typeof email !== "string" ||
-    typeof endereco !== "string"
+    typeof logradouro !== "string" ||
+    typeof bairro !== "string" ||
+    typeof cidade !== "string" ||
+    typeof estado !== "string"
   ) {
-    const error = new Error("nome, e-mail ou endereço não são uma string.");
+    const error = new Error(
+      "Nome, e-mail, logradouro, bairro, cidade e estado dever ser uma string."
+    );
     error.code = 400;
     throw error;
   }
 
-  if (!Number(telefone) || !Number(cpf)) {
-    const error = new Error("Telefone ou cpf devem ser somente números.");
+  if (!Number(telefone) || !Number(cpf) || !Number(cep)) {
+    const error = new Error("Telefone, cpf e cep devem ser somente números.");
     error.code = 400;
     throw error;
   }
@@ -42,14 +67,21 @@ const validatingBody = async (req) => {
   const checkingUniqueEmail = clients.filter(
     (client) => client.email === email
   );
-  if (checkingUniqueEmail) {
-    const error = new Error("Um usuário com esse email já foi cadastrado.");
+
+  if (
+    checkingUniqueEmail.length > 0 &&
+    checkingUniqueEmail[0]._id.toString() !== id
+  ) {
+    const error = new Error("Um cliente com esse email já foi cadastrado.");
     error.code = 400;
     throw error;
   }
   const checkingUniqueCpf = clients.filter((client) => client.cpf === cpf);
-  if (checkingUniqueCpf) {
-    const error = new Error("Um usuário com esse cpf já foi cadastrado.");
+  if (
+    checkingUniqueCpf.length > 0 &&
+    checkingUniqueEmail[0]._id.toString() !== id
+  ) {
+    const error = new Error("Um cliente com esse cpf já foi cadastrado.");
     error.code = 400;
     throw error;
   }
@@ -75,7 +107,7 @@ class ClientController {
       if (error.message.includes("required"))
         return res
           .status(400)
-          .json({ message: "Todos os campos são obrigatórios." });
+          .json({ message: "Preencha os campos obrigatórios." });
       return res.status(500).json({ message: "Erro interno no servidor" });
     }
   }
@@ -114,7 +146,7 @@ class ClientController {
       await validatingBody(req);
       await ClientModel.findByIdAndUpdate(id, req.body);
 
-      return res.status(200).json(client);
+      return res.status(204).send();
     } catch (error) {
       if (error.message.includes("Cast to ObjectId"))
         return res.status(404).json({ message: "Cliente não encontrado" });
