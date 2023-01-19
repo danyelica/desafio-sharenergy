@@ -11,6 +11,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
+import Header from "../../components/Header";
 import { Input, inputStyles } from "../../styles/styledcomponents";
 import styles from "../../styles/Users.module.css";
 import { checkingToken } from "../../utils/requests";
@@ -78,6 +79,9 @@ export default function Users() {
         <title>Users Page</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
+      <header>
+        <Header />
+      </header>
       <main className={styles.main}>
         <div className={styles.cardsSection}>
           {users.map((user, index) => (

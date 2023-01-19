@@ -34,10 +34,6 @@ export default function EditClient({ setOpen }) {
   const { headers } = useUser();
 
   useEffect(() => {
-    console.log(form);
-  }, [form]);
-
-  useEffect(() => {
     return setForm(client);
   }, []);
 

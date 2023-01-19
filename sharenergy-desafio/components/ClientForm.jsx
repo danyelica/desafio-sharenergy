@@ -3,12 +3,8 @@ import { useClient } from "../contexts/ClientsContexts";
 import { Input, inputStyles } from "../styles/styledcomponents";
 import { maskCep, maskCpf, maskTel } from "../utils/functions";
 
-export default function ClientForm({ action }) {
-  const { client, form, setForm } = useClient();
-
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
+export default function ClientForm() {
+  const { form, setForm } = useClient();
 
   function handleEditForm(target) {
     const value = `${target.value}`;

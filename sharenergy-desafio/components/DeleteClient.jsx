@@ -4,6 +4,8 @@ import { styled } from "@mui/material/styles";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import { deleteClient } from "../utils/requests";
+import { useClient } from "../contexts/ClientsContexts";
+import { useUser } from "../contexts/UserContext";
 
 const style = {
   position: "absolute",
@@ -38,9 +40,25 @@ const ConfirmButton = styled(ButtonUnstyled)(
 );
 
 export default function DeleteClient({ open, setOpen }) {
+  const { clients, setClients, setSuccessMessage, setErrorMessage } =
+    useClient();
+  const { headers } = useUser();
+
   async function handleDelete() {
-    const { data } = await deleteClient(open.delete);
-    console.log(data);
+    try {
+      await deleteClient(open.delete, headers);
+
+      const localClients = clients.filter(
+        (thisClient) => thisClient._id !== open.delete
+      );
+
+      setClients(localClients);
+      setOpen({ ...open, delete: false });
+      return setSuccessMessage("Cliente deletado com sucesso!");
+    } catch (err) {
+      if (err.response.data && err.response.data.message)
+        return setErrorMessage(err.response.data.message);
+    }
   }
   return (
     <Box sx={style}>

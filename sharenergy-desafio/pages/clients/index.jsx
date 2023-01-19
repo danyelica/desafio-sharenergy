@@ -27,6 +27,7 @@ import { useUser } from "../../contexts/UserContext";
 import styles from "../../styles/Clients.module.css";
 import { checkingToken, getClient, listClients } from "../../utils/requests";
 import AddClient from "../../components/AddClient";
+import Header from "../../components/Header";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -54,10 +55,6 @@ export default function Clients() {
     checkingUser();
     loadClients();
   }, []);
-
-  useEffect(() => {
-    console.log(clients);
-  }, [clients]);
 
   async function checkingUser() {
     const response = await checkingToken(user);
@@ -95,6 +92,9 @@ export default function Clients() {
         <title>Clients Page</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
+      <header>
+        <Header />
+      </header>
       <main className='main'>
         <Button
           variant='contained'

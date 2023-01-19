@@ -1,10 +1,11 @@
+import { Button } from "@mui/material/";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
-import { Alert, Button } from "@mui/material/";
+import ErrorBox from "../../components/ErrorBox";
+import Header from "../../components/Header";
 import styles from "../../styles/Dogs.module.css";
-import AlertBox from "../../components/AlertBox";
 import { checkingToken } from "../../utils/requests";
 
 export default function Dogs() {
@@ -43,6 +44,9 @@ export default function Dogs() {
         <title>Dogs Page</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
+      <header>
+        <Header />
+      </header>
       <main className='main'>
         <img src={url} className={styles.image} />
         <Button
@@ -71,7 +75,7 @@ export default function Dogs() {
         >
           Página Clientes
         </Button>
-        {error && <AlertBox message={error} setError={setError} />}
+        {error && <ErrorBox message={error} setError={setError} />}
       </main>
     </>
   );

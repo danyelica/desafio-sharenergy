@@ -34,10 +34,6 @@ export default function AddClient({ setOpen }) {
   const { headers } = useUser();
 
   useEffect(() => {
-    console.log(form);
-  }, [form]);
-
-  useEffect(() => {
     return setForm({
       nome: "",
       email: "",
@@ -76,7 +72,6 @@ export default function AddClient({ setOpen }) {
       };
 
       const { data } = await registerClient(headers, body);
-      console.log(data);
 
       const localClients = clients;
       localClients.push(data);
@@ -85,7 +80,6 @@ export default function AddClient({ setOpen }) {
       setOpen({ ...open, add: false });
       return setSuccessMessage("Cliente registrado com sucesso!");
     } catch (err) {
-      console.log(err);
       if (err.response.data && err.response.data.message)
         return setErrorMessage(err.response.data.message);
     }

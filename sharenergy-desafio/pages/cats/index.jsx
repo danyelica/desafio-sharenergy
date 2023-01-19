@@ -8,6 +8,7 @@ import NotFoundPage from "../../public/assets/images/404-page-not-found.png";
 import { statusArray, statusCatApi } from "../../services/statuscode";
 import styles from "../../styles/Cats.module.css";
 import { checkingToken } from "../../utils/requests";
+import Header from "../../components/Header";
 
 export default function Cats() {
   const router = useRouter();
@@ -31,6 +32,9 @@ export default function Cats() {
         <title>Cats Page</title>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
+      <header>
+        <Header />
+      </header>
       <main className='main'>
         <Select
           labelId='demo-simple-select-label'
