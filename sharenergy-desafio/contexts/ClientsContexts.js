@@ -12,7 +12,20 @@ export function ClientProvider(props) {
     email: "",
     telefone: "",
     cpf: "",
-    endereco: "",
+    logradouro: "",
+    bairro: "",
+    cep: "",
+    estado: "",
+  });
+  const [form, setForm] = useState({
+    nome: "",
+    email: "",
+    telefone: "",
+    cpf: "",
+    logradouro: "",
+    bairro: "",
+    cep: "",
+    estado: "",
   });
   const [clients, setClients] = useState([]);
 
@@ -23,6 +36,8 @@ export function ClientProvider(props) {
         setClient,
         clients,
         setClients,
+        form,
+        setForm,
         successMessage,
         setSuccessMessage,
         errorMessage,

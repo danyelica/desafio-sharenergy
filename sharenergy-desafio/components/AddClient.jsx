@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useClient } from "../contexts/ClientsContexts";
 import { useUser } from "../contexts/UserContext";
 import { formatatingNumber } from "../utils/functions";
-import { updateClient } from "../utils/requests";
+import { registerClient } from "../utils/requests";
 import ClientForm from "./ClientForm";
 import ErrorBox from "./ErrorBox";
 
@@ -20,7 +20,7 @@ const style = {
   p: 4,
 };
 
-export default function EditClient({ setOpen }) {
+export default function AddClient({ setOpen }) {
   const {
     client,
     form,
@@ -38,7 +38,16 @@ export default function EditClient({ setOpen }) {
   }, [form]);
 
   useEffect(() => {
-    return setForm(client);
+    return setForm({
+      nome: "",
+      email: "",
+      telefone: "",
+      cpf: "",
+      logradouro: "",
+      bairro: "",
+      cep: "",
+      estado: "",
+    });
   }, []);
 
   async function handleSubmit() {
@@ -66,18 +75,17 @@ export default function EditClient({ setOpen }) {
         cep: formatatingNumber(form.cep),
       };
 
-      await updateClient(client._id, headers, body);
+      const { data } = await registerClient(headers, body);
+      console.log(data);
 
       const localClients = clients;
-      const index = localClients.findIndex(
-        (thisClient) => thisClient._id === client._id
-      );
-      localClients[index] = { ...body };
+      localClients.push(data);
 
       setClients(localClients);
-      setOpen({ ...open, edit: false });
-      return setSuccessMessage("Cliente atualizado com sucesso!");
+      setOpen({ ...open, add: false });
+      return setSuccessMessage("Cliente registrado com sucesso!");
     } catch (err) {
+      console.log(err);
       if (err.response.data && err.response.data.message)
         return setErrorMessage(err.response.data.message);
     }
@@ -85,7 +93,7 @@ export default function EditClient({ setOpen }) {
 
   return (
     <Box sx={style}>
-      <ClientForm action='edit' />
+      <ClientForm />
       <Button
         variant='contained'
         sx={{
@@ -98,7 +106,7 @@ export default function EditClient({ setOpen }) {
         }}
         onClick={() => handleSubmit()}
       >
-        Editar
+        Adicionar
       </Button>
       {errorMessage && <ErrorBox />}
     </Box>

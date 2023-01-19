@@ -67,26 +67,39 @@ const validatingBody = async (req) => {
   const checkingUniqueEmail = clients.filter(
     (client) => client.email === email
   );
-
-  if (
-    checkingUniqueEmail.length > 0 &&
-    checkingUniqueEmail[0]._id.toString() !== id
-  ) {
-    const error = new Error("Um cliente com esse email já foi cadastrado.");
-    error.code = 400;
-    throw error;
-  }
   const checkingUniqueCpf = clients.filter((client) => client.cpf === cpf);
-  if (
-    checkingUniqueCpf.length > 0 &&
-    checkingUniqueEmail[0]._id.toString() !== id
-  ) {
-    const error = new Error("Um cliente com esse cpf já foi cadastrado.");
-    error.code = 400;
-    throw error;
+
+  if (id) {
+    if (
+      checkingUniqueEmail.length > 0 &&
+      checkingUniqueEmail[0]._id.toString() !== id
+    ) {
+      const error = new Error("Um cliente com esse email já foi cadastrado.");
+      error.code = 400;
+      throw error;
+    }
+    if (
+      checkingUniqueCpf.length > 0 &&
+      checkingUniqueEmail[0]._id.toString() !== id
+    ) {
+      const error = new Error("Um cliente com esse cpf já foi cadastrado.");
+      error.code = 400;
+      throw error;
+    }
+  } else {
+    if (checkingUniqueEmail.length > 0) {
+      const error = new Error("Um cliente com esse email já foi cadastrado.");
+      error.code = 400;
+      throw error;
+    }
+    if (checkingUniqueCpf.length > 0) {
+      const error = new Error("Um cliente com esse cpf já foi cadastrado.");
+      error.code = 400;
+      throw error;
+    }
   }
 
-  if (`${telefone}`.length < 8 || `${telefone}`.length > 9) {
+  if (`${telefone}`.length < 11 || `${telefone}`.length > 11) {
     const error = new Error("Telefone não tem o tamanho correto.");
     error.code = 400;
     throw error;
@@ -102,6 +115,7 @@ class ClientController {
 
       return res.status(201).json(client);
     } catch (error) {
+      console.log(error);
       if (error.message && error.code)
         return res.status(error.code).json({ message: error.message });
       if (error.message.includes("required"))

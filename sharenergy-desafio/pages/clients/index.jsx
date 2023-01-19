@@ -3,6 +3,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import PersonIcon from "@mui/icons-material/Person";
 import {
   Avatar,
+  Button,
   Grid,
   IconButton,
   List,
@@ -15,14 +16,17 @@ import { styled } from "@mui/material/styles";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import DeleteClient from "../../components/DeleteClient";
 import DetailClient from "../../components/DetailClient";
 import EditClient from "../../components/EditClient";
 import ErrorBox from "../../components/ErrorBox";
 import SuccessBox from "../../components/SuccessBox";
+import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import { useClient } from "../../contexts/ClientsContexts";
 import { useUser } from "../../contexts/UserContext";
 import styles from "../../styles/Clients.module.css";
 import { checkingToken, getClient, listClients } from "../../utils/requests";
+import AddClient from "../../components/AddClient";
 
 const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -40,6 +44,7 @@ export default function Clients() {
     setErrorMessage,
   } = useClient();
   const [open, setOpen] = useState({
+    add: false,
     detail: false,
     edit: false,
     delete: false,
@@ -91,6 +96,23 @@ export default function Clients() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <main className='main'>
+        <Button
+          variant='contained'
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            backgroundColor: "var(--main-color)",
+            "&:hover": {
+              backgroundColor: "#cf2951",
+              boxShadow: "none",
+            },
+          }}
+          onClick={() => setOpen({ ...open, add: true })}
+        >
+          Adicionar Cliente
+          <AddCircleRoundedIcon />
+        </Button>
         <Grid
           item
           xs={12}
@@ -110,7 +132,11 @@ export default function Clients() {
                         />
                       </IconButton>
                       <IconButton edge='end' aria-label='delete'>
-                        <DeleteIcon />
+                        <DeleteIcon
+                          onClick={() =>
+                            setOpen({ ...open, delete: client._id })
+                          }
+                        />
                       </IconButton>
                     </div>
                   }
@@ -134,6 +160,14 @@ export default function Clients() {
           </Demo>
         </Grid>
         <Modal
+          open={open.add}
+          onClose={() => setOpen({ ...open, add: false })}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          <AddClient setOpen={setOpen} />
+        </Modal>
+        <Modal
           open={open.detail}
           onClose={() => setOpen({ ...open, detail: false })}
           aria-labelledby='modal-modal-title'
@@ -148,6 +182,14 @@ export default function Clients() {
           aria-describedby='modal-modal-description'
         >
           <EditClient setOpen={setOpen} />
+        </Modal>
+        <Modal
+          open={open.delete}
+          onClose={() => setOpen({ ...open, delete: false })}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          <DeleteClient open={open} setOpen={setOpen} />
         </Modal>
         {errorMessage && <ErrorBox />}
         {successMessage && <SuccessBox />}

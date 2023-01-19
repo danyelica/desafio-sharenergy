@@ -21,6 +21,11 @@ export async function listClients(headers) {
   return response;
 }
 
+export async function registerClient(headers, body) {
+  const response = await api.post(`/clients`, { ...body }, { headers });
+  return response;
+}
+
 export async function getClient(id, headers) {
   const response = await api.get(`/clients/${id}`, { headers });
   return response;
@@ -28,5 +33,10 @@ export async function getClient(id, headers) {
 
 export async function updateClient(id, headers, body) {
   const response = await api.put(`/clients/${id}`, { ...body }, { headers });
+  return response;
+}
+
+export async function deleteClient(id, headers) {
+  const response = await api.delete(`/clients/${id}`, { headers });
   return response;
 }
